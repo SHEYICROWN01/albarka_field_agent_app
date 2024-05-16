@@ -1,14 +1,30 @@
 import 'package:albarka_agent_app/app_export.dart';
-
 import 'package:albarka_agent_app/controller/dailySavingsProvider.dart';
+import 'package:albarka_agent_app/controller/local_activities_provider.dart';
 import 'package:albarka_agent_app/controller/savingsByDateProvider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SentryFlutter.init(
+    (options) {
+      options.dsn =
+          'https://299d04f1a917d2b01e166732936bbb02@o4506616329797632.ingest.sentry.io/4506616345591808';
 
-  runApp(
-    const MyApp(),
+      options.tracesSampleRate = 0.01;
+    },
+    appRunner: () => runApp(const MyApp()),
   );
+
+  try {
+    int? test;
+    test! + 3;
+  } catch (exception, stackTrace) {
+    await Sentry.captureException(
+      exception,
+      stackTrace: stackTrace,
+    );
+  }
 }
 
 class MyApp extends StatefulWidget {
@@ -46,6 +62,8 @@ class _MyAppState extends State<MyApp> {
             create: (_) => DailySavingsProvider()),
         ChangeNotifierProvider<InstantMemberRecordProvider>(
             create: (_) => InstantMemberRecordProvider()),
+        ChangeNotifierProvider<LocalActivitiesProvider>(
+            create: (_) => LocalActivitiesProvider(context)),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

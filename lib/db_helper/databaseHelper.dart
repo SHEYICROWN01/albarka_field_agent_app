@@ -9,7 +9,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
-  static const login = 'login';
+
   static const savings = 'savings';
   DatabaseHelper._privateConstructor();
 
@@ -64,11 +64,14 @@ class DatabaseHelper {
     return savingsList;
   }
 
-  Future<void> deleteRecordByID(
-    String tableName,
-    int id,
-  ) async {
-    final db = await database;
-    await db.delete(tableName, where: 'id = ?', whereArgs: [id]);
+  Future<int> deleteRecordByID(String tableName, int id) async {
+    try {
+      final db = await database;
+      return await db.delete(tableName, where: 'id = ?', whereArgs: [id]);
+    } catch (e) {
+      debugPrint('Error deleting record: $e');
+      return 0; // Return 0 or any other appropriate value in case of an error.
+    }
   }
+
 }

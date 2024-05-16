@@ -1,7 +1,6 @@
 import 'dart:io';
-import 'package:albarka_agent_app/app_export.dart';
-
 import 'package:http/http.dart' as http;
+import 'package:albarka_agent_app/app_export.dart';
 
 class CustomerRegistration extends StatefulWidget {
   const CustomerRegistration({
@@ -15,6 +14,12 @@ class CustomerRegistration extends StatefulWidget {
 class _CustomerRegistrationState extends State<CustomerRegistration> {
   final formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
+  TextEditingController firstnameController = TextEditingController();
+  TextEditingController lastnameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController occupationController = TextEditingController();
+  TextEditingController rateController = TextEditingController();
   late DateTime selectedDate;
   String email = "";
   String firstname = "";
@@ -81,6 +86,12 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
   void dispose() {
     super.dispose();
     emailController.dispose();
+    firstnameController.dispose();
+    lastnameController.dispose();
+    phoneController.dispose();
+    addressController.dispose();
+    occupationController.dispose();
+    rateController.dispose();
   }
 
   @override
@@ -150,6 +161,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
+                  controller: firstnameController,
                   decoration: InputDecoration(
                     labelText: 'First Name',
                     hintText: 'Enter your First Name',
@@ -172,6 +184,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
                   },
                 ),
                 TextFormField(
+                  controller: lastnameController,
                   decoration: InputDecoration(
                     labelText: 'Last Name',
                     hintText: 'Enter your Last Name',
@@ -194,7 +207,8 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
                   },
                 ),
                 TextFormField(
-                   keyboardType: TextInputType.number,
+                  controller: phoneController,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: 'Phone',
                     hintText: 'Enter your phone',
@@ -256,15 +270,19 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
                     hintText: 'Enter your email',
                     suffixIcon: IconButton(
                       onPressed: () {
-                        GeneralVariable.newEmail =
-                            '$firstname$lastname@gmail.com'
-                                .replaceAll(' ', '')
-                                .toLowerCase();
-                        setState(() {
-                          GeneralVariable.myEmail1 = GeneralVariable.newEmail;
-                          emailController = TextEditingController(
-                              text: GeneralVariable.myEmail1);
-                        });
+                        if (firstname.isEmpty && lastname.isEmpty) {
+                          GeneralVariable.newEmail = "";
+                        } else {
+                          GeneralVariable.newEmail =
+                              '$firstname$lastname@gmail.com'
+                                  .replaceAll(' ', '')
+                                  .toLowerCase();
+                          setState(() {
+                            GeneralVariable.myEmail1 = GeneralVariable.newEmail;
+                            emailController = TextEditingController(
+                                text: GeneralVariable.myEmail1);
+                          });
+                        }
                       },
                       icon: Icon(
                         Icons.add_box,
@@ -288,6 +306,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
                   },
                 ),
                 TextFormField(
+                  controller: addressController,
                   decoration: InputDecoration(
                     labelText: 'Address',
                     hintText: 'Address',
@@ -310,6 +329,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
                   },
                 ),
                 TextFormField(
+                  controller: occupationController,
                   decoration: InputDecoration(
                     labelText: 'Occupation',
                     hintText: 'Occupation',
@@ -365,6 +385,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
                   height: 15,
                 ),
                 TextFormField(
+                  controller: rateController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: 'Rate',
@@ -505,7 +526,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
         request.fields['phoneNumber'] = phone;
         request.fields['email'] = emailController.text;
         request.fields['address'] = address;
-        request.fields['branch'] = _mySelection!;
+        request.fields['branch'] = _mySelection.toString();
         request.fields['representative'] = getRepresentative;
         request.fields['userLat'] = '7.145244';
         request.fields['userLong'] = '3.327695';
@@ -513,10 +534,8 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
         var pic =
             await http.MultipartFile.fromPath("image", _profileImage!.path);
         request.files.add(pic);
-
         var response = await request.send();
         var bodyResponse = await response.stream.bytesToString();
-        debugPrint(bodyResponse);
 
         if (bodyResponse !=
             "Unable to Insert Member Records.....Please try again later") {
@@ -524,11 +543,19 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
             isLoading = false;
           });
           CoolAlert.show(
+            barrierDismissible: false,
             context: context,
             type: CoolAlertType.success,
             title: "Successful",
             text: "$bodyResponse",
           );
+          firstnameController.clear();
+          lastnameController.clear();
+          phoneController.clear();
+          emailController.clear();
+          addressController.clear();
+          occupationController.clear();
+          rateController.clear();
         } else if (bodyResponse ==
             "Unable to Insert Member Records.....Please try again later") {
           setState(() {

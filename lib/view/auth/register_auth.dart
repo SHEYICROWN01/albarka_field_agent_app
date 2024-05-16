@@ -74,7 +74,7 @@ class _ContentState extends State<Content> {
 
   String? _validateImage(File? image) {
     if (image == null) {
-      return 'Select a preofile picture';
+      return 'Select a profile picture';
     }
     return null;
   }

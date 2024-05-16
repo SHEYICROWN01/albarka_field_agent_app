@@ -2,20 +2,19 @@
 import 'dart:io';
 
 import 'package:albarka_agent_app/app_export.dart';
+import 'package:albarka_agent_app/controller/local_activities_provider.dart';
 import 'package:albarka_agent_app/db_helper/getSavingsModel.dart';
 import 'package:http/http.dart' as http;
 
 class LocalActivities extends StatefulWidget {
-  const LocalActivities({Key? key}) : super(key: key);
+  const LocalActivities({super.key});
 
   @override
   State<LocalActivities> createState() => _LocalActivitiesState();
 }
 
 class _LocalActivitiesState extends State<LocalActivities> {
-  bool _processing = false;
   List<getSavingsModel> _savingsList = [];
-  int _currentIndex = 0;
 
   Future<List<getSavingsModel>> _getData() async {
     final getAgentDetails = Provider.of<AuthViewModel>(context, listen: false);
@@ -27,60 +26,6 @@ class _LocalActivitiesState extends State<LocalActivities> {
     return _savingsList;
   }
 
-  Future<void> _processItem(int index) async {
-    final getAgentDetails = Provider.of<AuthViewModel>(context, listen: false);
-    setState(() {
-      _processing = true;
-    });
-    try {
-      final url = Uri.parse(
-          "https://dashboard.albarkaltd.com/albarkaAPI/insertContribution.php");
-      final request = http.MultipartRequest('POST', url);
-      request.fields['member_id'] = _savingsList[index].memberID.toString();
-      request.fields['member_Name'] = _savingsList[index].memberName.toString();
-      request.fields['Amount'] = _savingsList[index].amount.toString();
-      request.fields['date'] = _savingsList[index].dateNow.toString();
-      request.fields['contributionType'] =
-          _savingsList[index].contributionType.toString();
-      request.fields['Branch'] = _savingsList[index].branch.toString();
-      request.fields['agentId'] = getAgentDetails.userid.toString();
-      request.fields['date2'] = _savingsList[index].dateTime.toString();
-      request.fields['transactionType'] =
-          _savingsList[index].transactionType.toString();
-
-      final response = await request.send();
-      final responseString = await response.stream.bytesToString();
-      if (response.statusCode == 200) {
-        await DatabaseHelper.instance.deleteRecordByID(
-          'savings',
-          _savingsList[index].id,
-        );
-
-        Utils.toastMessage(responseString);
-
-        //   if (_currentIndex < _savingsList.length - 1) {
-        //     _currentIndex++;
-        //     await _processItem(_currentIndex);
-        //   }
-        // } else if (response.statusCode == 400) {
-        //   Utils.toastMessage(responseString);
-        //   _currentIndex = 0;
-        // }
-      }
-    } on SocketException {
-      Utils.toastMessage('No Internet');
-    } finally {
-      setState(() {
-        _processing = false;
-      });
-    }
-  }
-
-  // Future<void> _uploadAll() async {
-  //   _currentIndex = 0;
-  //   await _processItem(_currentIndex);
-  // }
-
   @override
   void initState() {
     _getData();
@@ -89,6 +34,7 @@ class _LocalActivitiesState extends State<LocalActivities> {
 
   @override
   Widget build(BuildContext context) {
+    final getAgentDetails = Provider.of<AuthViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorConstant.primaryColor,
@@ -117,6 +63,18 @@ class _LocalActivitiesState extends State<LocalActivities> {
               backgroundColor: ColorConstant.primaryColor,
               color: Colors.green,
             ));
+          } else if (_savingsList.isEmpty) {
+            return Center(
+              child: Text(
+                'No Savings',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: getFontSize(16),
+                  fontFamily: 'Source Sans Pro',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            );
           } else {
             return ListView.builder(
               itemCount: snapshot.data!.length,
@@ -152,17 +110,72 @@ class _LocalActivitiesState extends State<LocalActivities> {
                             );
                           },
                           child: const Icon(Icons.delete, color: Colors.red)),
-                      leading: _processing == true
-                          ? const CircularProgressIndicator()
-                          : ElevatedButton.icon(
-                              onPressed: () {
-                                _processItem(index);
-                              },
-                              icon: const Icon(Icons.upload,
-                                  size: 12, color: Colors.white),
-                              label: const Text(''),
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: ColorConstant.primaryColor)),
+                      leading: Consumer<LocalActivitiesProvider>(
+                        builder: (context, provider, child) {
+                          return ElevatedButton.icon(
+                            onPressed: () async {
+
+                              if (!provider.isProcessing(index) &&
+                                  index < _savingsList.length) {
+                                debugPrint('Processing item at index: $index');
+                                bool success = await provider.processItem(
+                                  memberId:
+                                      _savingsList[index].memberID.toString(),
+                                  memberName:
+                                      _savingsList[index].memberName.toString(),
+                                  amount: _savingsList[index].amount.toString(),
+                                  date: _savingsList[index].dateNow.toString(),
+                                  contributionType: _savingsList[index]
+                                      .contributionType
+                                      .toString(),
+                                  branch: _savingsList[index].branch.toString(),
+                                  agentId: getAgentDetails.userid.toString(),
+                                  dateTime:
+                                      _savingsList[index].dateTime.toString(),
+                                  transactionType: _savingsList[index]
+                                      .transactionType
+                                      .toString(),
+                                  index: index,
+                                );
+                                debugPrint(success.toString());
+                                if (success) {
+                                  await DatabaseHelper.instance.deleteRecordByID(
+                                    'savings',
+                                    _savingsList[index].id,
+                                  );
+                                  // Perform actions on success
+                                  Utils.toastMessage('Savings processed successfully');
+                                } else {
+                                  // Perform actions on failure
+                                  Utils.toastMessage('Error processing savings');
+                                }
+                              }
+                            },
+                            icon: provider.isProcessing(index)
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : const Icon(Icons.upload,
+                                    size: 12, color: Colors.white),
+                            label: const Text(''),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: ColorConstant.primaryColor,
+                            ),
+                          );
+                        },
+                      ),
+
+                      // _processing[index] == true
+                      //     ? const CircularProgressIndicator()
+                      //     : ElevatedButton.icon(
+                      //         onPressed: () {
+                      //           _processItem(index);
+                      //         },
+                      //         icon: const Icon(Icons.upload,
+                      //             size: 12, color: Colors.white),
+                      //         label: const Text(''),
+                      //         style: ElevatedButton.styleFrom(
+                      //             backgroundColor: ColorConstant.primaryColor)),
                       title: Text(
                         'Account N0: ${snapshot.data?[index].memberID}',
                         style: const TextStyle(
@@ -202,15 +215,6 @@ class _LocalActivitiesState extends State<LocalActivities> {
           }
         },
       ),
-      // floatingActionButton: _processing == true
-      //     ? FloatingActionButton(
-      //         onPressed: () {},
-      //         child: const CircularProgressIndicator(strokeWidth: 3),
-      //       )
-      //     : FloatingActionButton(
-      //         onPressed: _uploadAll,
-      //         child: const Icon(Icons.cloud_upload),
-      //       ),
     );
   }
 

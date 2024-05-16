@@ -55,8 +55,8 @@ class ThirdActionBoard extends StatelessWidget {
                 buildExpanded('Expenses ', Icons.account_balance_wallet_sharp,
                     () => Navigator.pushNamed(context, RouteName.dailyExpense)),
                 buildExpanded(
-                    'Account Summary',
-                    Icons.save,
+                    'Account Report',
+                    Icons.book,
                     () =>
                         Navigator.pushNamed(context, RouteName.accountSummary)),
               ],

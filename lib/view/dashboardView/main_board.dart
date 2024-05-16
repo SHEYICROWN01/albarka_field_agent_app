@@ -1,4 +1,3 @@
-import 'package:albarka_agent_app/controller/dashboard_controller.dart';
 import 'package:albarka_agent_app/route/route_name.dart';
 import 'package:albarka_agent_app/utils/constant_color.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../controller/dashboard_controller.dart';
 import 'dashboard_action_button.dart';
 
 class MainBoard extends StatefulWidget {
@@ -17,6 +17,7 @@ class MainBoard extends StatefulWidget {
 
 class _MainBoardState extends State<MainBoard> {
   late String availableBalance = '';
+  bool hidePassword = true;
 
   @override
   void initState() {
@@ -46,50 +47,85 @@ class _MainBoardState extends State<MainBoard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
+                      Icon(
+                        size: 15,
+                        Icons.safety_check_outlined,
+                        color: ColorConstant.whiteA700,
+                      ),
+                      const Text(
                         'Available Balance',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.6),
-                          fontSize: 10,
+                          color: Colors.white,
+                          fontSize: 12,
                           fontWeight: FontWeight.w800,
-                          letterSpacing: 2.3,
                         ),
                       ),
-                      Center(
-                        child: GestureDetector(
-                          onTap: () => Navigator.pushNamed(
-                              context, RouteName.dailyTransaction),
-                          child: const Text(
-                            "Transaction History >",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              letterSpacing: 1,
-                              fontWeight: FontWeight.bold,
-                            ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            hidePassword = !hidePassword;
+                          });
+                        },
+                        child: Icon(
+                          size: 22,
+                          hidePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: ColorConstant.whiteA700,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 32,
+                      ),
+                      GestureDetector(
+                        onTap: () => Navigator.pushNamed(
+                            context, RouteName.dailyTransaction),
+                        child: const Text(
+                          "Transaction History >",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
-                  viewModel.dashboardModels != null
-                      ? Text(
-                          NumberFormat.currency(symbol: '', decimalDigits: 0)
-                              .format(tryParseDouble(availableBalance,
-                                  viewModel.dashboardModels!.totalCash)),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 28,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        )
-                      : SpinKitPumpingHeart(
-                          color: ColorConstant.whiteA700,
-                          size: 30.0,
+                  Row(
+                    children: [
+                      viewModel.dashboardModels != null
+                          ? Text(
+                        hidePassword
+                            ? '*****'
+                            : NumberFormat.currency(
+                            symbol: '', decimalDigits: 0)
+                            .format(tryParseDouble(
+                            availableBalance,
+                            viewModel
+                                .dashboardModels!.totalCash)),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 28,
+                          fontWeight: FontWeight.w700,
                         ),
+                      )
+                          : SpinKitPumpingHeart(
+                        color: ColorConstant.whiteA700,
+                        size: 30.0,
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                    ],
+                  ),
+
                   const SizedBox(height: 10),
                   // ... Your existing code ...
                   DashboardActionButtons(
