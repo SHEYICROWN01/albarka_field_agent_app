@@ -1,12 +1,10 @@
-
 import 'dart:io';
 import 'package:albarka_agent_app/app_export.dart';
-
 import 'package:http/http.dart' as http;
 
 
 class NoteView extends StatefulWidget {
-  const NoteView({Key? key}) : super(key: key);
+  const NoteView({super.key});
 
   @override
   State<NoteView> createState() => _NoteViewState();
@@ -81,7 +79,7 @@ class _NoteViewState extends State<NoteView> {
   }
   @override
   void dispose() {
-    // TODO: implement dispose
+
     super.dispose();
     commentController.dispose();
   }

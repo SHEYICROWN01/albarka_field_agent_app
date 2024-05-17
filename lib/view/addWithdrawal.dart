@@ -154,9 +154,6 @@ class _WithdrawalDialogState extends State<WithdrawalDialog> {
                           "Confirm the above Amount \n You won't be able to revert this!",
                       confirmButtonText: "Yes, Confirmed",
                       type: ArtSweetAlertType.warning));
-              if (response == null) {
-                return;
-              }
               if (response.isTapConfirmButton) {
                 confirmWith();
               }

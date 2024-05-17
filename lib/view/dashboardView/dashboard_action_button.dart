@@ -4,9 +4,9 @@ class DashboardActionButtons extends StatefulWidget {
   final void Function(String) updateText;
 
   const DashboardActionButtons({
-    Key? key,
+    super.key,
     required this.updateText,
-  }) : super(key: key);
+  });
 
   @override
   State<DashboardActionButtons> createState() => _DashboardActionButtonsState();

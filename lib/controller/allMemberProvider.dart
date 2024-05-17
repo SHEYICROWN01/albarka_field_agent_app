@@ -5,7 +5,6 @@ import 'package:albarka_agent_app/service/allMemberService.dart';
 import 'package:albarka_agent_app/utils/alertMessage.dart';
 import 'package:api_cache_manager/api_cache_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 class SelectedMember {
   Member member;

@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class DailyExpenses extends StatefulWidget {
-  const DailyExpenses({Key? key}) : super(key: key);
+  const DailyExpenses({super.key});
 
   @override
   State<DailyExpenses> createState() => _DailyExpensesState();

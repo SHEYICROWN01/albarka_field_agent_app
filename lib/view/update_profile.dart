@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'package:albarka_agent_app/app_export.dart';
-
 import 'package:http/http.dart' as http;
 
 class UpdateProfile extends StatefulWidget {
-  const UpdateProfile({Key? key}) : super(key: key);
+  const UpdateProfile({super.key});
 
   @override
   _UpdateProfileState createState() => _UpdateProfileState();
@@ -65,7 +64,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
   }
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     controller.dispose();
   }

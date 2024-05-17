@@ -187,7 +187,7 @@ class _AllMembersState extends State<AllMembers> {
                       ),
                     ),
                     Padding(
-                      padding: getPadding(left: 32, top: 5, right: 32),
+                      padding: getPadding(left: 32, top: 3, right: 32),
                       child: Text(
                         member.fullname,
                         overflow: TextOverflow.ellipsis,
@@ -196,7 +196,7 @@ class _AllMembersState extends State<AllMembers> {
                       ),
                     ),
                     Padding(
-                      padding: getPadding(left: 5, top: 5, right: 5, bottom: 5),
+                      padding: getPadding(left: 5, top: 3, right: 5, bottom: 5),
                       child: Text(
                         member.memberId,
                         overflow: TextOverflow.clip,
@@ -205,7 +205,7 @@ class _AllMembersState extends State<AllMembers> {
                       ),
                     ),
                     Padding(
-                      padding: getPadding(left: 5, top: 0, right: 5, bottom: 5),
+                      padding: getPadding(left: 5, top: 0, right: 5, bottom: 3),
                       child: Text(
                         "Balance: ${member.totalSavings.toString()}",
                         overflow: TextOverflow.clip,

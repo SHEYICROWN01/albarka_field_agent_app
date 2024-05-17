@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:albarka_agent_app/app_export.dart';
 
 class AccountSummary extends StatefulWidget {
-  const AccountSummary({Key? key}) : super(key: key);
+  const AccountSummary({super.key});
 
   @override
   _AccountSummaryState createState() => _AccountSummaryState();

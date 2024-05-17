@@ -1,10 +1,7 @@
 // ignore: file_names
-import 'dart:io';
-
 import 'package:albarka_agent_app/app_export.dart';
 import 'package:albarka_agent_app/controller/local_activities_provider.dart';
 import 'package:albarka_agent_app/db_helper/getSavingsModel.dart';
-import 'package:http/http.dart' as http;
 
 class LocalActivities extends StatefulWidget {
   const LocalActivities({super.key});

@@ -160,343 +160,132 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
-                  controller: firstnameController,
-                  decoration: InputDecoration(
-                    labelText: 'First Name',
-                    hintText: 'Enter your First Name',
-                    suffixIcon: Icon(
-                      Icons.person_outline,
-                      color: ColorConstant.primaryColor,
-                    ),
-                  ),
-                  validator: (val) {
-                    if (val!.length < 2) {
-                      return "Enter your First Name";
-                    } else {
-                      return null;
-                    }
-                  },
-                  onChanged: (val) {
-                    setState(() {
-                      firstname = val;
-                    });
-                  },
+                ReuseableInputFields(
+                  hintText: 'Full Name',
+                  errorMsg: 'Enter your full name',
+                  val: firstname,
+                  isEmail: false,
+                  isPass: false,
+                  len: 2,
                 ),
-                TextFormField(
-                  controller: lastnameController,
-                  decoration: InputDecoration(
-                    labelText: 'Last Name',
-                    hintText: 'Enter your Last Name',
-                    suffixIcon: Icon(
-                      Icons.person_outline,
-                      color: ColorConstant.primaryColor,
-                    ),
-                  ),
-                  validator: (val) {
-                    if (val!.length < 2) {
-                      return "Enter your Last Name";
-                    } else {
-                      return null;
-                    }
-                  },
-                  onChanged: (val) {
-                    setState(() {
-                      lastname = val;
-                    });
-                  },
+                ReuseableInputFields(
+                  hintText: 'Last Name',
+                  errorMsg: 'Enter your last name',
+                  val: lastname,
+                  isEmail: false,
+                  isPass: false,
+                  len: 2,
                 ),
-                TextFormField(
-                  controller: phoneController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Phone',
-                    hintText: 'Enter your phone',
-                    suffixIcon: Icon(
-                      Icons.phone,
-                      color: ColorConstant.primaryColor,
-                    ),
-                  ),
-                  validator: (val) {
-                    if (val!.length < 11 || val.length > 11) {
-                      return "Enter a valid Phone";
-                    } else {
-                      return null;
-                    }
-                  },
-                  onChanged: (val) {
-                    setState(() {
-                      phone = val;
-                    });
-                  },
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    buildPaddingGender(),
-                    buildPaddingMaritalStatus(),
-                    Row(
-                      children: [
-                        const Text('DOB'),
-                        IconButton(
-                          icon: Icon(Icons.date_range,
-                              color: ColorConstant.primaryColor),
-                          onPressed: () async {
-                            final pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: selectedDate,
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2101),
-                            );
-
-                            if (pickedDate != null &&
-                                pickedDate != selectedDate) {
-                              setState(() {
-                                selectedDate = pickedDate;
-                                ageRange =
-                                    '${selectedDate.day.toString()}-${selectedDate.month.toString()}';
-                              });
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                TextFormField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    hintText: 'Enter your email',
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        if (firstname.isEmpty && lastname.isEmpty) {
-                          GeneralVariable.newEmail = "";
-                        } else {
-                          GeneralVariable.newEmail =
-                              '$firstname$lastname@gmail.com'
-                                  .replaceAll(' ', '')
-                                  .toLowerCase();
-                          setState(() {
-                            GeneralVariable.myEmail1 = GeneralVariable.newEmail;
-                            emailController = TextEditingController(
-                                text: GeneralVariable.myEmail1);
-                          });
-                        }
-                      },
-                      icon: Icon(
-                        Icons.add_box,
-                        color: ColorConstant.primaryColor,
-                      ),
-                    ),
-                  ),
-                  validator: (val) {
-                    const pattern =
-                        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$";
-                    final regex = RegExp(pattern);
-                    if (!regex.hasMatch(val!)) {
-                      return 'Please enter a valid email address.';
-                    }
-                    return null;
-                  },
-                  onChanged: (val) {
-                    setState(() {
-                      email = val;
-                    });
-                  },
-                ),
-                TextFormField(
-                  controller: addressController,
-                  decoration: InputDecoration(
-                    labelText: 'Address',
-                    hintText: 'Address',
-                    suffixIcon: Icon(
-                      Icons.home_work,
-                      color: ColorConstant.primaryColor,
-                    ),
-                  ),
-                  validator: (val) {
-                    if (val!.length < 2) {
-                      return "Required Customer's Address";
-                    } else {
-                      return null;
-                    }
-                  },
-                  onChanged: (val) {
-                    setState(() {
-                      address = val;
-                    });
-                  },
-                ),
-                TextFormField(
-                  controller: occupationController,
-                  decoration: InputDecoration(
-                    labelText: 'Occupation',
-                    hintText: 'Occupation',
-                    suffixIcon: Icon(
-                      Icons.person_outline,
-                      color: ColorConstant.primaryColor,
-                    ),
-                  ),
-                  validator: (val) {
-                    if (val!.length < 2) {
-                      return "Required Customer's Occupation";
-                    } else {
-                      return null;
-                    }
-                  },
-                  onChanged: (val) {
-                    setState(() {
-                      occupation = val;
-                    });
-                  },
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Select Location',
-                      style: TextStyle(fontSize: 12.0, letterSpacing: 1),
-                    ),
-                    DropdownButton(
-                      items: data?.map((item) {
-                        return DropdownMenuItem(
-                          value: item['branch'].toString(),
-                          child: Text(
-                              data!.isEmpty
-                                  ? 'Please wait....'
-                                  : item['branch'],
-                              style: const TextStyle(
-                                  letterSpacing: 1, fontSize: 14)),
-                        );
-                      }).toList(),
-                      onChanged: (newVal) {
-                        setState(() {
-                          _mySelection = newVal.toString();
-                        });
-                      },
-                      value: _mySelection,
-                    ),
-                  ],
+                ReuseableInputFields(
+                  hintText: 'Phone Number',
+                  errorMsg: 'Enter your full name',
+                  val: phone,
+                  isEmail: false,
+                  isPass: false,
+                  len: 11,
                 ),
                 const SizedBox(
                   height: 15,
                 ),
-                TextFormField(
-                  controller: rateController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Rate',
-                    hintText: "Enter savings Rate",
-                    suffixIcon: Icon(
-                      Icons.currency_exchange,
-                      color: ColorConstant.primaryColor,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ReuseableLocalDropDown(
+                      val: maritalStatus,
+                      dropDownValue: dropMaritalStatus,
+                      items: const [
+                        'Marital Status',
+                        'Single',
+                        'Married',
+                        'Divorce',
+                      ],
                     ),
-                  ),
-                  validator: (val) {
-                    if (int.parse(val!) < 1) {
-                      return "Rate can't be 0";
-                    } else {
-                      return null;
-                    }
-                  },
-                  onChanged: (val) {
-                    setState(() {
-                      rate = val;
-                    });
-                  },
+                    ReuseableLocalDropDown(
+                      val: dataGender,
+                      dropDownValue: dropdownValue,
+                      items: const [
+                        'Gender',
+                        'Male',
+                        'Female',
+                      ],
+                    ),
+                    Container(
+                      height: 65,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.grey[200]),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        children: [
+                          const Text('DOB',),
+                          IconButton(
+                            icon: Icon(Icons.date_range_outlined,
+                                color: ColorConstant.black900),
+                            onPressed: () async {
+                              final pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: selectedDate,
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2101),
+                              );
+
+                              if (pickedDate != null &&
+                                  pickedDate != selectedDate) {
+                                setState(() {
+                                  selectedDate = pickedDate;
+                                  ageRange =
+                                      '${selectedDate.day.toString()}-${selectedDate.month.toString()}';
+                                });
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                ReuseableInputFields(
+                  hintText: 'Address',
+                  errorMsg: "Required Customer's Address",
+                  val: address,
+                  isEmail: false,
+                  isPass: false,
+                  len: 2,
+                ),
+                ReuseableInputFields(
+                  hintText: 'Occupation',
+                  errorMsg: "Required Customer's Occupation",
+                  val: occupation,
+                  isEmail: false,
+                  isPass: false,
+                  len: 2,
+                ),
+                ReuseableDropDown(
+                  hintText: 'Location',
+                  mySelection: _mySelection,
+                  data: data,
+                  itemName: 'branch',
+                ),
+                ReuseableInputFields(
+                  hintText: 'Rate',
+                  errorMsg: "Rate can't be 0",
+                  val: rate,
+                  isEmail: false,
+                  isPass: false,
+                  len: 2,
                 ),
                 const SizedBox(height: 20),
                 isLoading == true
-                    ? const CircularProgressIndicator(
-                        strokeWidth: 2,
-                      )
-                    : FilledButton(
-                        onPressed: () => _registerCustomer(
+                    ? const FillLoadingButton()
+                    : FillProcessButton(
+                        onClick: () => _registerCustomer(
                             getAgentDetails.username.toString()),
-                        child: const SizedBox(
-                          width: double.infinity,
-                          child: Center(child: Text('Register')),
-                        ),
-                      ),
+                        msg: 'Register',
+                      )
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Padding buildPaddingGender() {
-    return Padding(
-      padding:
-          const EdgeInsets.only(top: 10.0, bottom: 10.0, right: 5.0, left: 5.0),
-      child: DropdownButton<String>(
-        value: dropdownValue,
-        icon: const Icon(Icons.arrow_downward),
-        iconSize: 15,
-        elevation: 16,
-        style: const TextStyle(
-          color: Colors.black,
-          fontSize: 12.0,
-        ),
-        underline: Container(
-          height: 2,
-          color: Colors.black12,
-        ),
-        onChanged: (String? newValue) {
-          setState(() {
-            dropdownValue = newValue!;
-            dataGender = dropdownValue;
-          });
-        },
-        items: <String>[
-          'Gender',
-          'Male',
-          'Female',
-        ].map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-      ),
-    );
-  }
-
-  Padding buildPaddingMaritalStatus() {
-    return Padding(
-      padding:
-          const EdgeInsets.only(top: 10.0, bottom: 10.0, right: 5.0, left: 5.0),
-      child: DropdownButton<String>(
-        value: dropMaritalStatus,
-        icon: const Icon(Icons.arrow_downward),
-        iconSize: 15,
-        elevation: 16,
-        style: const TextStyle(color: Colors.black, fontSize: 12.0),
-        underline: Container(
-          height: 2,
-          color: Colors.black12,
-        ),
-        onChanged: (String? newValue) {
-          setState(() {
-            dropMaritalStatus = newValue!;
-            maritalStatus = dropMaritalStatus;
-          });
-        },
-        items: <String>[
-          'Marital Status',
-          'Single',
-          'Married',
-          'Divorce',
-        ].map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
       ),
     );
   }
@@ -524,7 +313,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
         request.fields['rate'] = rate;
         request.fields['occupation'] = occupation;
         request.fields['phoneNumber'] = phone;
-        request.fields['email'] = emailController.text;
+        request.fields['email'] = 'albarkaltd@gmail.com';
         request.fields['address'] = address;
         request.fields['branch'] = _mySelection.toString();
         request.fields['representative'] = getRepresentative;
@@ -547,7 +336,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
             context: context,
             type: CoolAlertType.success,
             title: "Successful",
-            text: "$bodyResponse",
+            text: bodyResponse,
           );
           firstnameController.clear();
           lastnameController.clear();

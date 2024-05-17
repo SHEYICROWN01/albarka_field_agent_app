@@ -2,7 +2,7 @@ import 'package:albarka_agent_app/app_export.dart';
 import 'package:albarka_agent_app/controller/dailySavingsProvider.dart';
 
 class DailyTransaction extends StatefulWidget {
-  const DailyTransaction({Key? key}) : super(key: key);
+  const DailyTransaction({super.key});
 
   @override
   State<DailyTransaction> createState() => _DailyTransactionState();
@@ -22,7 +22,6 @@ class _DailyTransactionState extends State<DailyTransaction> {
   }
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _searchController.dispose();
   }

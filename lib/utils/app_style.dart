@@ -269,6 +269,14 @@ class AppStyle {
     fontWeight: FontWeight.w400,
   );
 
+  static TextStyle txtSourceSansPrimaryColor = TextStyle(
+    color: ColorConstant.primaryColor,
+    fontSize: getFontSize(
+      10,
+    ),
+    fontFamily: 'Source Sans Pro',
+    fontWeight: FontWeight.w600,
+  );
   static TextStyle txtSourceSansProSemiBold15WhiteA700 = TextStyle(
     color: ColorConstant.whiteA700,
     fontSize: getFontSize(

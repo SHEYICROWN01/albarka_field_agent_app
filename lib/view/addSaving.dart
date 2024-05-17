@@ -15,7 +15,6 @@ class _SavingsDialogState extends State<SavingsDialog> {
 
   @override
   void dispose() {
-  
     super.dispose();
     amountController.dispose();
   }
@@ -27,19 +26,24 @@ class _SavingsDialogState extends State<SavingsDialog> {
     final getAgentDetails = Provider.of<AuthViewModel>(context);
     return AlertDialog(
       title: const Text('New Savings'),
+      backgroundColor: Colors.white,
       content: Form(
         key: formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey[100],
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextFormField(
                 controller: amountController,
                 decoration: const InputDecoration(
                   labelText: 'Amount',
                   hintText: '#20000',
-                  suffixIcon: Icon(Icons.currency_exchange),
+                  border: InputBorder.none
                 ),
                 keyboardType: TextInputType.number,
                 validator: (value) {

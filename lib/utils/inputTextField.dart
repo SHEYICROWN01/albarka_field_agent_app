@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class InputTextFields extends StatelessWidget {
   InputTextFields(
-      {Key? key,
+      {super.key,
         required this.label,
         required this.controller,
         required this.isNumber,
         required this.icon,
         required this.enableEditing,
         required this.suffixIcon,
-      })
-      : super(key: key);
+      });
   String label;
   bool? isNumber = false;
   bool? enableEditing = false;

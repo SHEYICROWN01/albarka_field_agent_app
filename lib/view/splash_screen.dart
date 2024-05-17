@@ -1,7 +1,7 @@
 import 'package:albarka_agent_app/app_export.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api

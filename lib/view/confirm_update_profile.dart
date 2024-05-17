@@ -1,16 +1,15 @@
 import 'dart:io';
 import 'package:albarka_agent_app/app_export.dart';
-
 import 'package:http/http.dart' as http;
 
 class ConfirmUpdateProfile extends StatefulWidget {
   final List list;
   final int index;
   const ConfirmUpdateProfile({
-    Key? key,
+    super.key,
     required this.list,
     required this.index,
-  }) : super(key: key);
+  });
 
   @override
   // ignore: library_private_types_in_public_api
@@ -304,41 +303,49 @@ class _ConfirmUpdateProfileState extends State<ConfirmUpdateProfile> {
                   myController: customerId!,
                   labelText: 'Member ID',
                   hintText: 'Member ID'),
+              const SizedBox(height: 10,),
               InputSavingsTextFields(
                   editable: true,
                   myController: fullname!,
                   hintText: 'First Name',
                   labelText: 'First Name'),
+              const SizedBox(height: 10,),
               InputSavingsTextFields(
                   editable: true,
                   myController: lastname!,
                   hintText: 'Last Name',
                   labelText: 'Last Name'),
+              const SizedBox(height: 10,),
               InputSavingsTextFields(
                   editable: true,
                   myController: rate!,
                   hintText: 'Rate',
                   labelText: 'Rate'),
+              const SizedBox(height: 10,),
               InputSavingsTextFields(
                   editable: true,
                   myController: marital!,
                   hintText: 'Marital Status',
                   labelText: 'Marital Status'),
+              const SizedBox(height: 10,),
               InputSavingsTextFields(
                   editable: true,
                   myController: phone!,
                   hintText: 'Phone Number',
                   labelText: 'Phone Number'),
+              const SizedBox(height: 10,),
               InputSavingsTextFields(
                   editable: true,
                   myController: occupation!,
                   hintText: 'Occupation',
                   labelText: 'Occupation'),
+              const SizedBox(height: 10,),
               InputSavingsTextFields(
                   editable: true,
                   myController: address!,
                   hintText: 'Address',
                   labelText: 'Address'),
+              const SizedBox(height: 10,),
               GestureDetector(
                 onTap: () async {
                   updateMember();

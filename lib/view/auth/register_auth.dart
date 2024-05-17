@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:albarka_agent_app/app_export.dart';
 import 'package:http/http.dart' as http;
-
 class Register extends StatelessWidget {
   const Register({
     super.key,
@@ -48,7 +47,7 @@ class _ContentState extends State<Content> {
   File? _profileImage;
   bool isLoading = false;
 
-    String url = "https://dashboard.albarkaltd.com/mobileapi/branch.php";
+  String url = "https://dashboard.albarkaltd.com/mobileapi/branch.php";
 
   List? data = [];
   Future<String> getSWData() async {
@@ -64,7 +63,6 @@ class _ContentState extends State<Content> {
   Future<void> _pickImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
-
     setState(() {
       if (pickedFile != null) {
         _profileImage = File(pickedFile.path);
@@ -79,7 +77,6 @@ class _ContentState extends State<Content> {
     return null;
   }
 
- 
   @override
   void initState() {
     super.initState();
@@ -129,6 +126,8 @@ class _ContentState extends State<Content> {
                 child: Stack(
                   children: [
                     CircleAvatar(
+                      backgroundColor:
+                          ColorConstant.primaryColor.withOpacity(0.6),
                       radius: 40,
                       backgroundImage: _profileImage != null
                           ? Image.file(_profileImage!).image
@@ -147,211 +146,94 @@ class _ContentState extends State<Content> {
                 ),
               ),
               const SizedBox(height: 20),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  hintText: 'Enter your email',
-                  suffixIcon: Icon(Icons.mail_outlined),
-                ),
-                validator: (val) {
-                  const pattern =
-                      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$";
-                  final regex = RegExp(pattern);
-                  if (!regex.hasMatch(val!)) {
-                    return 'Please enter a valid email address.';
-                  }
-                  return null;
-                },
-                onChanged: (val) {
-                  setState(() {
-                    email = val;
-                  });
-                },
+              ReuseableInputFields(
+                hintText: 'Email Address',
+                errorMsg: 'Enter your valid email address',
+                val: email,
+                isEmail: true,
+                isPass: false,
+                len: 0,
               ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'FullName',
-                  hintText: 'Enter your FullName',
-                  suffixIcon: Icon(Icons.person_outline),
-                ),
-                validator: (val) {
-                  if (val!.length < 2) {
-                    return "Enter your FullName";
-                  } else {
-                    return null;
-                  }
-                },
-                onChanged: (val) {
-                  setState(() {
-                    name = val;
-                  });
-                },
+              ReuseableInputFields(
+                hintText: 'Full Name',
+                errorMsg: 'Enter your full name',
+                val: name,
+                isEmail: false,
+                isPass: false,
+                len: 2,
               ),
-              TextFormField(
-                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Phone',
-                  hintText: 'Enter your phone',
-                  suffixIcon: Icon(Icons.phone),
-                ),
-                validator: (val) {
-                  if (val!.length < 11) {
-                    return "Enter a valid Phone";
-                  } else {
-                    return null;
-                  }
-                },
-                onChanged: (val) {
-                  setState(() {
-                    phone = val;
-                  });
-                },
+              ReuseableInputFields(
+                  hintText: 'Phone',
+                  errorMsg: 'Enter a valid phone number',
+                  val: phone,
+                  isEmail: false,
+                  isPass: false,
+                  len: 11),
+              ReuseableInputFields(
+                hintText: 'Address',
+                errorMsg: 'Enter your address',
+                val: address,
+                isEmail: false,
+                isPass: false,
+                len: 2,
               ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Address',
-                  hintText: 'Enter your address',
-                  suffixIcon: Icon(Icons.home_work),
-                ),
-                validator: (val) {
-                  if (val!.length < 2) {
-                    return "Enter your address";
-                  } else {
-                    return null;
-                  }
-                },
-                onChanged: (val) {
-                  setState(() {
-                    address = val;
-                  });
-                },
+              ReuseableInputFields(
+                hintText: 'Username',
+                errorMsg: 'Enter your username',
+                val: username,
+                isEmail: false,
+                isPass: false,
+                len: 2,
               ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Username',
-                  hintText: 'Enter your username',
-                  suffixIcon: Icon(Icons.account_circle),
-                ),
-                validator: (val) {
-                  if (val!.length < 2) {
-                    return "Enter your username";
-                  } else {
-                    return null;
-                  }
-                },
-                onChanged: (val) {
-                  setState(() {
-                    username = val;
-                  });
-                },
+              ReuseableInputFields(
+                hintText: 'Password',
+                errorMsg: 'Enter your password',
+                val: password,
+                isEmail: false,
+                isPass: true,
+                len: 2,
               ),
-              TextFormField(
-                obscureText: hidePassword,
-                enableSuggestions: false,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  hintText: 'Enter your password',
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        hidePassword = !hidePassword;
-                      });
-                    },
-                    child: Icon(
-                      hidePassword ? Icons.visibility_off : Icons.visibility,
-                      // color: ColorConstant.deepOrange800,
+              ReuseableDropDown(
+                hintText: 'Location',
+                mySelection: _mySelection,
+                data: data,
+                itemName: 'branch',
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(5, 20, 5, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.grey[200]),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'Registration Code',
+                      border: InputBorder.none,
+                      suffixIcon: Icon(Icons.lock_person_sharp),
                     ),
-                  ),
-                ),
-                validator: (val) {
-                  if (val!.length < 6) {
-                    return "Password can be less than 6";
-                  } else {
-                    return null;
-                  }
-                },
-                onChanged: (val) {
-                  setState(() {
-                    password = val;
-                  });
-                },
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Location',
-                    style: TextStyle(fontSize: 15.0, letterSpacing: 1),
-                  ),
-                  DropdownButton(
-                    items: data?.map((item) {
-                      return DropdownMenuItem(
-                        value: item['branch'].toString(),
-                        child: Text(
-                            data!.isEmpty ? 'Please wait....' : item['branch'],
-                            style: const TextStyle(
-                                letterSpacing: 1, fontSize: 14)),
-                      );
-                    }).toList(),
-                    onChanged: (newVal) {
+                    validator: (val) {
+                      if (val != "AlbarkaBusinessSupport") {
+                        return "Provide a valid Registration Code";
+                      } else {
+                        return null;
+                      }
+                    },
+                    onChanged: (val) {
                       setState(() {
-                        _mySelection = newVal.toString();
+                        registrationCode = val;
                       });
                     },
-                    value: _mySelection,
                   ),
-                ],
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              const Divider(
-                indent: 100,
-                endIndent: 100,
-                thickness: 5,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Registration Code',
-                  hintText: 'Enter your registration code',
-                  suffixIcon: Icon(Icons.lock_person_sharp),
                 ),
-                validator: (val) {
-                  if (val != "AlbarkaBusinessSupport") {
-                    return "Provide a valid Registration Code";
-                  } else {
-                    return null;
-                  }
-                },
-                onChanged: (val) {
-                  setState(() {
-                    registrationCode = val;
-                  });
-                },
               ),
               const SizedBox(height: 20),
               isLoading == true
-                  ? FilledButton(
-                      onPressed: () {},
-                      child: const SizedBox(
-                        width: double.infinity,
-                        child: Center(
-                            child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        )),
-                      ),
+                  ? const FillLoadingButton()
+                  : FillProcessButton(
+                      onClick: () => register(),
+                      msg: 'Sign up',
                     )
-                  : FilledButton(
-                      onPressed: () => register(),
-                      child: const SizedBox(
-                        width: double.infinity,
-                        child: Center(child: Text('Register')),
-                      ),
-                    ),
             ],
           ),
         ),
@@ -362,7 +244,9 @@ class _ContentState extends State<Content> {
   Future<void> register() async {
     String? imageValidation = _validateImage(_profileImage);
 
-    if (formKey.currentState!.validate() && imageValidation == null) {
+    if (formKey.currentState!.validate() &&
+        imageValidation != null &&
+        _mySelection != null) {
       setState(() {
         isLoading = true;
       });

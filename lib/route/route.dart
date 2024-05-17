@@ -4,7 +4,6 @@ import 'package:albarka_agent_app/view/all_customers.dart';
 import 'package:albarka_agent_app/view/auth/register_auth.dart';
 import 'package:albarka_agent_app/view/daily_transactions.dart';
 import 'package:albarka_agent_app/view/expenses.dart';
-import 'package:albarka_agent_app/view/get_all_members.dart';
 import 'package:albarka_agent_app/view/localActivities.dart';
 import 'package:albarka_agent_app/view/noteView.dart';
 import 'package:albarka_agent_app/view/notification.dart';

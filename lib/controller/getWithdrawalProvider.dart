@@ -16,7 +16,6 @@ class GetWithdrawalProvider extends ChangeNotifier {
       final response = await _loanByDateService.getSavingsByDate();
       _allDailySavings = response;
       _filteredDailySavings = _allDailySavings;
-    } catch (e) {
     } finally {
       isLoading = false;
       notifyListeners();

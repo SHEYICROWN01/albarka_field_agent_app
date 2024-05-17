@@ -3,7 +3,7 @@ import 'package:albarka_agent_app/controller/savingsByDateProvider.dart';
 import 'package:intl/intl.dart';
 
 class TransactionByDate extends StatefulWidget {
-  const TransactionByDate({Key? key}) : super(key: key);
+  const TransactionByDate({super.key});
 
   @override
   State<TransactionByDate> createState() => _TransactionByDateViewState();

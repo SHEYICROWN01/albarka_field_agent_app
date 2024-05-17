@@ -2,7 +2,7 @@
 import 'package:albarka_agent_app/app_export.dart';
 
 class MemberRecord extends StatefulWidget {
-  const MemberRecord({Key? key}) : super(key: key);
+  const MemberRecord({super.key});
 
   @override
   State<MemberRecord> createState() => _MemberRecordState();

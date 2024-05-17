@@ -1,11 +1,11 @@
 class AppUrl {
   //Base Url
-  static var baseUrl = 'https://dashboard.albarkaltd.com';
+  static var baseUrl = 'https://dashboard.albarkaltd.com/albarkaAPI';
   static var domainName = 'https://dashboard.albarkaltd.com/';
 
   //All Api end point
   static var loginApiEndPoint = 'https://dashboard.albarkaltd.com/albarkaAPI/login_api.php';
-  static var dashboardApiEndPoint = '$baseUrl/albarkaAPI/dashboard_api.php';
+  static var dashboardApiEndPoint = '$baseUrl/dashboard_api.php';
   static var allMemberEndPoint = 'https://dashboard.albarkaltd.com/albarkaAPI/allcustomers.php';
   static var instantMemberRecordEndPoint = 'http://dashboard.albarkaltd.com/albarkaAPI/getInstantMemberReocrd.php';
   static var dailyLoan = '$baseUrl/dailyLoan.php';
@@ -18,7 +18,7 @@ class AppUrl {
   static var getMemberForUpdate = '$baseUrl/getMemberForUpdate.php';
   static var individualComment = '$baseUrl/individualComment.php';
   static var getIndividualComment = '$baseUrl/getIndividualComment.php';
-  static var newMemberWallet = '$baseUrl/newmemberWallet.php';
+  static var memberWallet = '$baseUrl/memberWallet.php';
   static var dailyExpenses = '$baseUrl/dailyExpenses.php';
   static var getDailyExpenses = '$baseUrl/getDailyExpenses.php';
   static var branch = '$baseUrl/branch.php';

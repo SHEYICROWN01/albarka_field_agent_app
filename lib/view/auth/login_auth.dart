@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:albarka_agent_app/app_export.dart';
 import 'package:albarka_agent_app/view/auth/register_auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -58,8 +56,7 @@ class _LoginAuthState extends State<LoginAuth> {
         localizedReason: 'Authenticate with fingerprint',
       );
     } catch (e) {
-      Utils.snackBar(
-          'Error during fingerprint authentication: $e', context);
+      Utils.snackBar('Error during fingerprint authentication: $e', context);
     }
 
     if (authenticated) {
@@ -91,8 +88,7 @@ class _LoginAuthState extends State<LoginAuth> {
             child: SpinKitPouringHourGlassRefined(
           color: ColorConstant.primaryColor,
           size: 30.0,
-        )
-        ),
+        )),
       );
     }
 
@@ -130,58 +126,77 @@ class _LoginAuthState extends State<LoginAuth> {
                         ),
                       ),
                       const Text("Do login to continue"),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Username',
-                          hintText: 'Enter your username',
-                        ),
-                        validator: (val) {
-                          if (val!.length < 2) {
-                            return "Enter your username";
-                          } else {
-                            return null;
-                          }
-                        },
-                        onChanged: (val) {
-                          setState(() {
-                            username = val;
-                          });
-                        },
-                      ),
-                      TextFormField(
-                        obscureText: hidePassword,
-                        enableSuggestions: false,
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          hintText: 'Enter your password',
-                          suffixIcon: GestureDetector(
-                            onTap: () {
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(5, 20, 5, 0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: Colors.grey[200]),
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: TextFormField(
+                            decoration: const InputDecoration(
+                              hintText: 'Username',
+                              border: InputBorder.none,
+                            ),
+                            validator: (val) {
+                              if (val!.length < 2) {
+                                return "Enter your username";
+                              } else {
+                                return null;
+                              }
+                            },
+                            onChanged: (val) {
                               setState(() {
-                                hidePassword = !hidePassword;
+                                username = val;
                               });
                             },
-                            child: Icon(
-                              hidePassword
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: ColorConstant.primaryColor,
-                            ),
                           ),
                         ),
-                        validator: (val) {
-                          if (val!.length < 2) {
-                            return "Enter your Password";
-                          } else {
-                            return null;
-                          }
-                        },
-                        onChanged: (val) {
-                          setState(() {
-                            password = val;
-                          });
-                        },
                       ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(5, 20, 5, 10),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: Colors.grey[200]),
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: TextFormField(
+                            obscureText: hidePassword,
+                            enableSuggestions: false,
+                            autocorrect: false,
+                            decoration: InputDecoration(
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    hidePassword = !hidePassword;
+                                  });
+                                },
+                                child: Icon(
+                                  hidePassword
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: ColorConstant.primaryColor,
+                                ),
+                              ),
+                              hintText: 'Password',
+                              border: InputBorder.none,
+                            ),
+                            validator: (val) {
+                              if (val!.length < 2) {
+                                return "Enter your Password";
+                              } else {
+                                return null;
+                              }
+                            },
+                            onChanged: (val) {
+                              setState(() {
+                                password = val;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+
                       const Row(
                         children: [
                           Text("Don't have an account?"),
