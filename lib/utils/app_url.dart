@@ -18,7 +18,7 @@ class AppUrl {
   static var getMemberForUpdate = '$baseUrl/getMemberForUpdate.php';
   static var individualComment = '$baseUrl/individualComment.php';
   static var getIndividualComment = '$baseUrl/getIndividualComment.php';
-  static var memberWallet = '$baseUrl/memberWallet.php';
+  static var memberWallet = '$baseUrl/newMemberWallet.php';
   static var dailyExpenses = '$baseUrl/dailyExpenses.php';
   static var getDailyExpenses = '$baseUrl/getDailyExpenses.php';
   static var branch = '$baseUrl/branch.php';

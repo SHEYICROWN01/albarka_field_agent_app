@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:albarka_agent_app/app_export.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:http/http.dart' as http;
@@ -26,9 +27,11 @@ class _MemberDetailsState extends State<MemberDetails> {
   List<UserWallet> _listWallet = [];
   List<UserWithdrawalWallet> _listWithdrawalWallet = [];
 
+
+
   Future<void> fetchUserWallet() async {
     final allMemberProvider =
-    Provider.of<AllMemberProvider>(context, listen: false);
+        Provider.of<AllMemberProvider>(context, listen: false);
     final selectedMember = allMemberProvider.selectedMember;
     try {
       setState(() {
@@ -37,6 +40,8 @@ class _MemberDetailsState extends State<MemberDetails> {
       var url = Uri.parse(
           '${AppUrl.memberWallet}?memberid=${selectedMember!.member.memberId}');
       final response = await http.post(url);
+
+      debugPrint(response.body);
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         _listWallet =
@@ -53,7 +58,7 @@ class _MemberDetailsState extends State<MemberDetails> {
 
   Future<void> fetchUserWithdrawalWallet() async {
     final allMemberProvider =
-    Provider.of<AllMemberProvider>(context, listen: false);
+        Provider.of<AllMemberProvider>(context, listen: false);
     final selectedMember = allMemberProvider.selectedMember;
     try {
       setState(() {
@@ -125,41 +130,41 @@ class _MemberDetailsState extends State<MemberDetails> {
                 backgroundColor: ColorConstant.primaryColor,
                 context: context,
                 builder: (context) => SafeArea(
-                  child: Wrap(
-                    children: <Widget>[
-                      ListTile(
-                          leading: const Icon(Icons.monetization_on_sharp,
-                              color: Colors.white),
-                          title: const Text(
-                            'Add New Savings',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w900),
-                          ),
-                          onTap: () async {
-                            Navigator.pop(context);
+                      child: Wrap(
+                        children: <Widget>[
+                          ListTile(
+                              leading: const Icon(Icons.monetization_on_sharp,
+                                  color: Colors.white),
+                              title: const Text(
+                                'Add New Savings',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900),
+                              ),
+                              onTap: () async {
+                                Navigator.pop(context);
 
-                            _openSavingsDialog(context);
-                          }),
-                      ListTile(
-                        leading: const Icon(
-                          Icons.money,
-                          color: Colors.white,
-                        ),
-                        title: const Text(
-                          'Request Withdrawal',
-                          style: TextStyle(
+                                _openSavingsDialog(context);
+                              }),
+                          ListTile(
+                            leading: const Icon(
+                              Icons.money,
                               color: Colors.white,
-                              fontWeight: FontWeight.w900),
-                        ),
-                        onTap: () async {
-                          Navigator.pop(context);
-                          _openWithdrawalDialog(context);
-                        },
+                            ),
+                            title: const Text(
+                              'Request Withdrawal',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                            onTap: () async {
+                              Navigator.pop(context);
+                              _openWithdrawalDialog(context);
+                            },
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ));
+                    ));
           },
           backgroundColor: ColorConstant.primaryColor,
           child: Icon(Icons.add, color: ColorConstant.whiteA700),
@@ -192,6 +197,15 @@ class _MemberDetailsState extends State<MemberDetails> {
                   ),
                 ),
                 GestureDetector(
+                    onTap: () async {
+                      bool? res = await FlutterPhoneDirectCaller.callNumber(
+                          selectedMember!.member.phone);
+                    },
+                    child: const Icon(
+                      Icons.call,
+                      color: Colors.white,
+                    )),
+                GestureDetector(
                   onTap: () {
                     setState(() {
                       showTransactionHistory = !showTransactionHistory;
@@ -201,10 +215,12 @@ class _MemberDetailsState extends State<MemberDetails> {
                     padding: const EdgeInsets.only(right: 20),
                     child: Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0), color: Colors.grey[200]),
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.grey[200]),
                       padding: const EdgeInsets.symmetric(horizontal: 5.0),
                       child: Padding(
-                        padding: getPadding(left: 5, top: 5, right: 5, bottom: 5),
+                        padding:
+                            getPadding(left: 5, top: 5, right: 5, bottom: 5),
                         child: Text(
                           showTransactionHistory
                               ? 'Show Withdrawal History'
@@ -263,7 +279,7 @@ class _MemberDetailsState extends State<MemberDetails> {
     return Align(
       alignment: Alignment.center,
       child: Padding(
-        padding: getPadding(left: 13, top: 90, right: 13),
+        padding: getPadding(left: 13, top: 85, right: 13, bottom: 10),
         child: Column(
           children: [
             Text(
@@ -307,9 +323,9 @@ class _MemberDetailsState extends State<MemberDetails> {
               textAlign: TextAlign.left,
               style: TextStyle(
                 color:
-                int.parse(selectedMember.member.totalSavings.toString()) < 0
-                    ? Colors.red
-                    : Colors.green,
+                    int.parse(selectedMember.member.totalSavings.toString()) < 0
+                        ? Colors.red
+                        : Colors.green,
                 fontSize: getFontSize(13),
                 fontFamily: 'Source Sans Pro',
                 fontWeight: FontWeight.w600,
@@ -339,9 +355,9 @@ class _MemberDetailsState extends State<MemberDetails> {
                   decoration: AppDecoration.fillWhiteA700,
                   child: walletLoading
                       ? SpinKitCubeGrid(
-                    color: ColorConstant.primaryColor,
-                    size: 30.0,
-                  )
+                          color: ColorConstant.primaryColor,
+                          size: 30.0,
+                        )
                       : _buildTransactionList(),
                 ),
               ),
@@ -370,9 +386,9 @@ class _MemberDetailsState extends State<MemberDetails> {
                   decoration: AppDecoration.fillWhiteA700,
                   child: walletWithdrawalLoading
                       ? SpinKitCubeGrid(
-                    color: ColorConstant.primaryColor,
-                    size: 30.0,
-                  )
+                          color: ColorConstant.primaryColor,
+                          size: 30.0,
+                        )
                       : _buildWithdrawalList(),
                 ),
               ),
@@ -412,8 +428,8 @@ class _MemberDetailsState extends State<MemberDetails> {
           Color amountColor = isRegularSavings
               ? Colors.green
               : isLoanRepayment
-              ? Colors.red
-              : Colors.black;
+                  ? Colors.red
+                  : Colors.black;
           return Column(
             children: [
               Align(
@@ -440,7 +456,7 @@ class _MemberDetailsState extends State<MemberDetails> {
                       padding: getPadding(left: 4, top: 14, bottom: 14),
                       child: ClipRRect(
                         borderRadius:
-                        BorderRadius.circular(getHorizontalSize(19.00)),
+                            BorderRadius.circular(getHorizontalSize(19.00)),
                         child: CommonImageView(
                           imagePath: ImageConstant.logo,
                           height: getVerticalSize(38.00),
@@ -550,8 +566,8 @@ class _MemberDetailsState extends State<MemberDetails> {
           Color amountColor = isRegularSavings
               ? Colors.green
               : isLoanRepayment
-              ? Colors.red
-              : Colors.black;
+                  ? Colors.red
+                  : Colors.black;
           return Column(
             children: [
               Align(
@@ -578,7 +594,7 @@ class _MemberDetailsState extends State<MemberDetails> {
                       padding: getPadding(left: 4, top: 14, bottom: 14),
                       child: ClipRRect(
                         borderRadius:
-                        BorderRadius.circular(getHorizontalSize(19.00)),
+                            BorderRadius.circular(getHorizontalSize(19.00)),
                         child: CommonImageView(
                           imagePath: ImageConstant.logo,
                           height: getVerticalSize(38.00),
@@ -614,7 +630,7 @@ class _MemberDetailsState extends State<MemberDetails> {
                                 Padding(
                                   padding: getPadding(top: 1),
                                   child: Text(
-                                    'Transaction by : ${_listWithdrawalWallet[index].agentUsername}',
+                                    'Withdrawal By : ${_listWithdrawalWallet[index].agentUsername}',
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
@@ -630,9 +646,9 @@ class _MemberDetailsState extends State<MemberDetails> {
                                     padding: getPadding(top: 1),
                                     child: Text(
                                       _listWithdrawalWallet[index]
-                                          .amount
-                                          .length <
-                                          2
+                                                  .amount
+                                                  .length <
+                                              2
                                           ? (' ')
                                           : _listWithdrawalWallet[index].amount,
                                       overflow: TextOverflow.ellipsis,

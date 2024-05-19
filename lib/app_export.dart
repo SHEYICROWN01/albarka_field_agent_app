@@ -58,7 +58,7 @@ export 'package:albarka_agent_app/utils/customIconButton.dart';
 export 'package:cached_network_image/cached_network_image.dart';
 export 'package:albarka_agent_app/db_helper/savingsModel.dart';
 export 'package:albarka_agent_app/model/userWallet.dart';
-export 'package:albarka_agent_app/view/allMember.dart';
+// export 'package:albarka_agent_app/view/allMember.dart';
 export 'package:albarka_agent_app/view/member_details.dart';
 export 'package:albarka_agent_app/utils/generalVariable.dart';
 export 'package:albarka_agent_app/view/customer_registration.dart';
